@@ -1,0 +1,58 @@
+experiment: morph
+seed: 1234
+output_dir: runs/morph
+data:
+  geometry: 1024
+  train_manifest: splits/pranet_train.csv
+  test_manifests:
+    kvasir: splits/pranet_kvasir.csv
+    clinicdb: splits/pranet_clinicdb.csv
+    colondb: splits/pranet_colondb.csv
+    etis: splits/pranet_etis.csv
+    endoscene: splits/pranet_endoscene.csv
+  horizontal_flip_probability: 0.5
+  vertical_flip_probability: 0.5
+  rotation_degrees: [-10, 10]
+  rotation_probability: 0.5
+  intensity_perturbation: 0.1
+  intensity_probability: 0.5
+model:
+  sam_checkpoint: checkpoints/sam_vit_b_01ec64.pth
+  wavelet: haar
+  wavelet_levels: 3
+  interaction_blocks: [2, 5, 8, 11]
+  activation_checkpointing: true
+  activation_checkpointing_scope: global
+  meaa_sources: [cnn, whfc, vit]
+  aggregation: branch_softmax
+  fusion: cbaf
+  frequency_mode: morph_prompt
+  click_radius: 5
+train:
+  epochs: 200
+  batch_size: 2
+  learning_rate: 0.01
+  weight_decay: 0.0
+  scheduler_step: 50
+  scheduler_gamma: 0.1
+  prompt_mode: one_click
+  bce_weight: 0.3
+  dice_weight: 1.2
+  dice_smooth: 1.0e-6
+evaluation:
+  threshold: 0.5
+  prompt_seed: 1234
+  boundary_width: 1
+  metric_epsilon: 1.0e-7
+execution:
+  device: auto
+  precision: float32
+  num_workers: 4
+  pin_memory: true
+  prefetch_factor: 2
+  log_every: 50
+  gradient_clip_norm: 1.0
+  allow_tf32: false
+  deterministic_warn_only: false
+  fp32_batchnorm: true
+  robust_batchnorm_layers: [cbaf.vit_branch.1]

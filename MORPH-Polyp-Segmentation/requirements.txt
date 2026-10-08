@@ -1,0 +1,8 @@
+torch==2.5.1
+torchvision==0.20.1
+segment-anything==1.0
+numpy>=1.24,<3
+Pillow>=9.1
+PyYAML>=6.0
+opencv-python>=4.8
+PyWavelets>=1.4

@@ -1,0 +1,3 @@
+extends: base.yaml
+evaluation:
+  protocol: 2-m
