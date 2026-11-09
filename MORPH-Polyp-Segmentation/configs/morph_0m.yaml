@@ -1,3 +1,0 @@
-extends: base.yaml
-evaluation:
-  protocol: 0-m
